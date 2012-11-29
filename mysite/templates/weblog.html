@@ -4,12 +4,7 @@
 <a>{{post.body}}</a>
       <img src="{{MEDIA_URL}}{{post.images}}"/>
       <p>地址：{{post.get_absolute_url}}</p>
-      <p>时间：{{post.get_time}}</p>
 <hr>
 {% endfor %}
-<form action="/search/" method="get">
-        <input type="text" name="q">
-        <input type="submit" value="Search">
-</form>
 
 </html>

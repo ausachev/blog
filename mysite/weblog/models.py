@@ -1,27 +1,39 @@
 #coding=utf-8
 from django.db import models
 from django.db.models.fields.files import ImageFieldFile
-import datetime 
+from django.template.defaultfilters import slugify
 import sys,os
 from mysite.settings import MEDIA_ROOT
 from django.utils import timezone
+from django.utils.http import urlquote
 # MEDIA_ROOT = '/uploads/image'
 # Create your models here.
 
 class BolgPost(models.Model):
+	STATUS_CHOICES = (
+		(1, ('Draft')),
+		(2, ('Public')),)
 	title = models.CharField(max_length= 150)
 	body = models.TextField()
 	timestamp = models.DateTimeField()
-	author = models.CharField(max_length= 30)
-	slug = models.SlugField(help_text=("used to build the entry's URL"),
+	author = models.CharField(max_length= 30,default='GreenTea')
+	slug = models.SlugField(unique=True,help_text=("used to build the entry's URL"),
                             max_length=255) 
 	images = models.ImageField(('images'), upload_to=MEDIA_ROOT,
                               blank=True ,max_length=1000,help_text=('used for illustration'))
+	status = models.IntegerField(('status'), choices=STATUS_CHOICES, default=1)
 	
+	def save(self, *args, **kwargs):
+
+		if not self.slug:
+			# title = urlquote(self.title)
+			self.slug = slugify(self.title)
+		super(BolgPost,self).save(*args, **kwargs)
+			
+
 	@models.permalink
 	def get_absolute_url(self):
-		timestamp = timezone.localtime(self.timestamp)
-		# month =  str(timestamp.strftime('%b'))
+		timestamp = self.timestamp
 		return ('archive',None,{
 		'year' : timestamp.strftime('%Y'),
 		'month': timestamp.strftime('%m'),
@@ -32,10 +44,6 @@ class BolgPost(models.Model):
 
 	def __unicode__(self):
 		return self.title
-	def get_time(self):
-		timestamp = timezone.localtime(self.timestamp)
-		return (self.timestamp.strftime("%Y-%b-%d"),
-		)
 class Category(models.Model):
 	title = models.CharField(max_length=200)
 	slug = models.SlugField()
@@ -45,11 +53,11 @@ class Category(models.Model):
 		ordering            = ('title',)
 		def __unicode__(self):
 			return self.title
+	@models.permalink
 	def get_absolute_url(self):
 		return ('category', None, {
 				'category': self.slug
 			})
-	get_absolute_url = models.permalink(get_absolute_url)
 
 
 

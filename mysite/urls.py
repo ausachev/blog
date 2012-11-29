@@ -17,7 +17,6 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^home/$',include('mysite.weblog.urls')),
-    # url(r'^search',views.search),
     url(r'^blog/',include('mysite.weblog.urls')),
     # url(r'^blog/',views.blog_page), #
     url(r'^medias/(?P<path>.*)', 'mysite.dynamic_media_serve.serve', 
