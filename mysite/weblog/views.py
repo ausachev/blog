@@ -6,7 +6,6 @@ from django.template import Template, Context
 from django.template.loader import get_template
 from django.shortcuts import render_to_response
 from django.views.generic import View 
-from django
 from mysite.settings import MEDIA_ROOT,MEDIA_URL
 def index(request):
 	posts = BolgPost.objects.filter(status=2)
@@ -20,6 +19,10 @@ def archive(request,year,month,day,slug):
 			{'post':post,})
 	else :
 		return HttpResponse(' wrong')
+def base(request):
+	return render_to_response('base.html',{})
+
+
 
 class ViewObject(View):
 	"""docstring for ViewObject"""
