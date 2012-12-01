@@ -19,7 +19,7 @@ lib
 lib64
 .png
 .jpg
-
+.pyc
 # Installer logs
 pip-log.txt
 

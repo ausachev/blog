@@ -6,7 +6,7 @@ from django.template import Template, Context
 from django.template.loader import get_template
 from django.shortcuts import render_to_response
 from django.views.generic import View 
-from mysite.settings import MEDIA_ROOT,MEDIA_URL
+from mysite.settings import MEDIA_ROOT,MEDIA_URL,STATIC_URL,STATIC_ROOT
 def index(request):
 	posts = BolgPost.objects.filter(status=2)
 	return render_to_response('weblog.html',
@@ -20,7 +20,7 @@ def archive(request,year,month,day,slug):
 	else :
 		return HttpResponse(' wrong')
 def base(request):
-	return render_to_response('base.html',{})
+	return render_to_response('base.html',{'STATIC_URL':STATIC_URL,'path':STATIC_ROOT},)
 
 
 

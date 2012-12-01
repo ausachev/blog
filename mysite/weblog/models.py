@@ -22,7 +22,7 @@ class BolgPost(models.Model):
 	images = models.ImageField(('images'), upload_to=MEDIA_ROOT,
                               blank=True ,max_length=1000,help_text=('used for illustration'))
 	status = models.IntegerField(('status'), choices=STATUS_CHOICES, default=1)
-	
+
 	def save(self, *args, **kwargs):
 
 		if not self.slug:
